@@ -18,48 +18,70 @@
     extra-substituters = "https://devenv.cachix.org";
   };
 
-  outputs = inputs@{ flake-parts, devenv-root, ... }:
+  outputs =
+    inputs@{ flake-parts, devenv-root, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
-      imports = [
-        inputs.devenv.flakeModule
+      imports = [ inputs.devenv.flakeModule ];
+      systems = [
+        "x86_64-linux"
+        # "i686-linux"
+        "x86_64-darwin"
+        # "aarch64-linux"
+        "aarch64-darwin"
       ];
-      systems = [ "x86_64-linux" "i686-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
 
-      perSystem = { config, self', inputs', pkgs, system, ... }: {
-        # Per-system attributes can be defined here. The self' and inputs'
-        # module parameters provide easy access to attributes of the same
-        # system.
+      perSystem =
+        {
+          config,
+          self',
+          inputs',
+          pkgs,
+          system,
+          ...
+        }:
+        {
+          # Per-system attributes can be defined here. The self' and inputs'
+          # module parameters provide easy access to attributes of the same
+          # system.
 
-        # Equivalent to  inputs'.nixpkgs.legacyPackages.hello;
-        packages.default = pkgs.hello;
+          devenv.shells.default = {
+            devenv.root =
+              let
+                devenvRootFileContent = builtins.readFile devenv-root.outPath;
+              in
+              pkgs.lib.mkIf (devenvRootFileContent != "") devenvRootFileContent;
 
-        devenv.shells.default = {
-          devenv.root =
-            let
-              devenvRootFileContent = builtins.readFile devenv-root.outPath;
-            in
-            pkgs.lib.mkIf (devenvRootFileContent != "") devenvRootFileContent;
+            name = "Jupyter-id-tests";
 
-          name = "Jupyter-id-tests";
+            imports = [
+              # This is just like the imports in devenv.nix.
+              # See https://devenv.sh/guides/using-with-flake-parts/#import-a-devenv-module
+              # ./devenv-foo.nix
+            ];
 
-          imports = [
-            # This is just like the imports in devenv.nix.
-            # See https://devenv.sh/guides/using-with-flake-parts/#import-a-devenv-module
-            # ./devenv-foo.nix
-          ];
+            languages = {
+              nix.enable = true;
+              python = {
+                enable = true;
+                venv = true;
+                requirements = ''
+                  jupyterlab
+                  voila
+                '';
+              };
+            };
 
-          # https://devenv.sh/reference/options/
-          packages = [ config.packages.default ];
+            # https://devenv.sh/reference/options/
+            # packages = [ config.packages.default ];
 
-          enterShell = ''
-            hello
-          '';
+            enterShell = ''
+              jupyter lab
+            '';
 
-          processes.hello.exec = "hello";
+          };
+
         };
 
-      };
-      
       flake = {
         # The usual flake attributes can be defined here, including system-
         # agnostic ones like nixosModule and system-enumerating ones, although
