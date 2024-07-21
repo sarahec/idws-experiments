@@ -71,6 +71,7 @@
                   voila
                   langchain
                   langgraph
+                  langchain-groq
                 '';
               };
             };
