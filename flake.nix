@@ -59,24 +59,27 @@
               # ./devenv-foo.nix
             ];
 
-            languages = {
-              nix.enable = true;
-              python = {
+            languages.nix.enable = true;
+
+            languages.python = {
+              enable = true;
+              venv = {
                 enable = true;
-                venv = true;
+                quiet = false;
                 requirements = ''
                   jupyterlab
                   voila
+                  langchain
+                  langgraph
                 '';
               };
             };
 
             # https://devenv.sh/reference/options/
-            # packages = [ config.packages.default ];
-
-            enterShell = ''
-              jupyter lab
-            '';
+            packages = [
+              # pkgs.jupyter
+              # pkgs.python3Packages.langchain
+            ];
 
           };
 
