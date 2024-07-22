@@ -78,8 +78,7 @@
             # https://devenv.sh/reference/options/
             packages = [ pkgs.dotenvx ];
 
-            processes.juypter.exec = "dotenvx run -- jupyter-lab";
-
+            processes.juypter.exec = "dotenvx run -f .env -- jupyter-lab";
           };
 
         };
