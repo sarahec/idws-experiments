@@ -81,6 +81,8 @@
               # pkgs.python3Packages.langchain
             ];
 
+            processes.juypter.exec = "jupyterlab";
+
           };
 
         };
