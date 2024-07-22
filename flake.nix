@@ -6,7 +6,7 @@
       url = "file+file:///dev/null";
       flake = false;
     };
-    nixpkgs.url = "github:cachix/devenv-nixpkgs/rolling";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     devenv.url = "github:cachix/devenv";
     nix2container.url = "github:nlewo/nix2container";
     nix2container.inputs.nixpkgs.follows = "nixpkgs";
@@ -76,12 +76,9 @@
             };
 
             # https://devenv.sh/reference/options/
-            packages = [
-              # pkgs.jupyter
-              # pkgs.python3Packages.langchain
-            ];
+            packages = [ pkgs.dotenvx ];
 
-            processes.juypter.exec = "jupyterlab";
+            processes.juypter.exec = "dotenvx run -- jupyter-lab";
 
           };
 

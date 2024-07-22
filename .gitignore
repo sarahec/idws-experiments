@@ -1,5 +1,11 @@
 .devenv
 .direnv
-.ipynb_checkpoints
-.DS_Store
 
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Secrets management
+.env.keys
+
+# Mac Finder metadata
+.DS_Store
