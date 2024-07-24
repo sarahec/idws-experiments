@@ -59,6 +59,8 @@
               # ./devenv-foo.nix
             ];
 
+            dotenv.disableHint = true; # Using dotenvx instead and there's no integration
+
             languages.nix.enable = true;
 
             languages.python = {
@@ -80,8 +82,12 @@
             packages = [ pkgs.dotenvx ];
 
             processes.juypter.exec = "dotenvx run -f .env -- jupyter-lab";
-          };
 
+	    enterShell = ''
+    	      # fixes libstdc++ issues and libgl.so issues
+       	      export LD_LIBRARY_PATH=${pkgs.stdenv.cc.cc.lib}/lib/
+	    '';
+          };
         };
 
       flake = {
