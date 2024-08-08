@@ -1,0 +1,5 @@
+#! /bin/bash
+if git grep -l -E "(lsv2_|gsk_|tvly-)" .env; then
+  echo "Found decrypted env vars"
+  exit 2
+fi
