@@ -73,7 +73,10 @@
                   voila
                   langchain
                   langgraph
+                  langsmith
+                  langchain-community
                   langchain-groq
+                  tavily-python
                 '';
               };
             };
@@ -81,12 +84,15 @@
             # https://devenv.sh/reference/options/
             packages = [ pkgs.dotenvx ];
 
-            processes.juypter.exec = "dotenvx run -f .env -- jupyter-lab";
+            processes.juypter.exec = ''
+              dotenvx decrypt
+              dotenvx run -f .env -- jupyter-lab
+            '';
 
-	    enterShell = ''
-    	      # fixes libstdc++ issues and libgl.so issues
-       	      export LD_LIBRARY_PATH=${pkgs.stdenv.cc.cc.lib}/lib/
-	    '';
+            enterShell = ''
+              # fixes libstdc++ issues and libgl.so issues
+              export LD_LIBRARY_PATH=${pkgs.stdenv.cc.cc.lib}/lib/
+            '';
           };
         };
 
