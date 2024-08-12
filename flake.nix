@@ -82,7 +82,11 @@
             };
 
             # https://devenv.sh/reference/options/
-            packages = [ pkgs.dotenvx ];
+            packages = [ 
+              pkgs.dotenvx
+            ];
+
+            pre-commit.hooks.ripsecrets.enable = true;
 
             processes.juypter.exec = ''
               dotenvx decrypt
