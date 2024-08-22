@@ -61,6 +61,16 @@
 
             dotenv.disableHint = true; # Using dotenvx instead and there's no integration
 
+            languages.javascript = {
+              enable = true;
+              npm = {
+                enable = true;
+                install.enable = true;
+              };
+            };
+
+            # languages.typescript.enable = true;
+
             languages.nix.enable = true;
 
             languages.python = {
@@ -76,6 +86,8 @@
                   langsmith
                   langchain-community
                   langchain-groq
+                  python-lsp-server
+                  python-lsp-black
                   tavily-python
                 '';
               };
@@ -85,12 +97,14 @@
             packages = [ 
               pkgs.dotenvx 
               pkgs.nodePackages.ijavascript
+              pkgs.typescript-language-server
             ];
 
             pre-commit.hooks.ripsecrets.enable = true;
 
             processes.juypter.exec = ''
               ijsinstall
+              # npm install -g typescript-jupyter-kernel
               dotenvx decrypt && jupyter-lab
             '';
 

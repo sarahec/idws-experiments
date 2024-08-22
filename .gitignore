@@ -1,5 +1,7 @@
 .devenv
 .direnv
+# Generated file changes per environment
+.pre=commit-config.yaml
 
 # Jupyter Notebook
 .ipynb_checkpoints
