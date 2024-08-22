@@ -82,11 +82,15 @@
             };
 
             # https://devenv.sh/reference/options/
-            packages = [ pkgs.dotenvx ];
+            packages = [ 
+              pkgs.dotenvx 
+              pkgs.nodePackages.ijavascript
+            ];
 
             pre-commit.hooks.ripsecrets.enable = true;
 
             processes.juypter.exec = ''
+              ijsinstall
               dotenvx decrypt && jupyter-lab
             '';
 
