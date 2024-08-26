@@ -5,6 +5,7 @@
 
 # Jupyter Notebook
 .ipynb_checkpoints
+.virtual_documents
 
 # Secrets management
 .env.keys
