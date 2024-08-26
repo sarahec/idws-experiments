@@ -61,16 +61,9 @@
 
             dotenv.disableHint = true; # Using dotenvx instead and there's no integration
 
-            languages.javascript = {
-              enable = true;
-              npm = {
-                enable = true;
-                install.enable = true;
-              };
-            };
-
-            # languages.typescript.enable = true;
-
+            languages.javascript.enable = true;
+            languages.deno.enable = true;
+            languages.typescript.enable = true;
             languages.nix.enable = true;
 
             languages.python = {
@@ -79,22 +72,24 @@
                 enable = true;
                 quiet = false;
                 requirements = ''
+                  ipykernel
                   jupyterlab
-                  voila
                   langchain
-                  langgraph
-                  langsmith
                   langchain-community
                   langchain-groq
-                  python-lsp-server
+                  langgraph
+                  langsmith
                   python-lsp-black
+                  python-lsp-server
                   tavily-python
+                  voila
                 '';
               };
             };
 
             # https://devenv.sh/reference/options/
             packages = [ 
+              pkgs.deno
               pkgs.dotenvx 
               pkgs.nodePackages.ijavascript
               pkgs.typescript-language-server
@@ -103,12 +98,12 @@
             pre-commit.hooks.ripsecrets.enable = true;
 
             processes.juypter.exec = ''
-              ijsinstall
-              # npm install -g typescript-jupyter-kernel
-              dotenvx decrypt && jupyter-lab
+              deno jupyter --unstable --install
+              jupyter-lab
             '';
 
             enterShell = ''
+              dotenvx decrypt
               # fixes libstdc++ issues and libgl.so issues
               export LD_LIBRARY_PATH=${pkgs.stdenv.cc.cc.lib}/lib/
             '';
