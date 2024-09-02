@@ -88,14 +88,17 @@
             };
 
             # https://devenv.sh/reference/options/
-            packages = [ 
+            packages = [
               pkgs.deno
-              pkgs.dotenvx 
+              pkgs.dotenvx
               pkgs.nodePackages.ijavascript
               pkgs.typescript-language-server
             ];
 
-            pre-commit.hooks.ripsecrets.enable = true;
+            pre-commit.hooks.ripsecrets = {
+              enable = true;
+              entry = ".devenv/profile/bin/ripsecrets  --strict-ignore";
+            };
 
             processes.juypter.exec = ''
               deno jupyter --unstable --install
