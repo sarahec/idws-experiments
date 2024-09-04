@@ -102,11 +102,11 @@
 
             processes.juypter.exec = ''
               deno jupyter --unstable --install
-              jupyter-lab
+              dotenvx run -- jupyter-lab
             '';
 
             enterShell = ''
-              dotenvx decrypt
+              # dotenvx decrypt
               # fixes libstdc++ issues and libgl.so issues
               export LD_LIBRARY_PATH=${pkgs.stdenv.cc.cc.lib}/lib/
             '';
