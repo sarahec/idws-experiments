@@ -101,8 +101,8 @@
             };
 
             processes.juypter.exec = ''
-              deno jupyter --unstable --install
-              dotenvx run -- jupyter-lab
+              deno jupyter --install
+              jupyter-lab
             '';
 
             enterShell = ''
