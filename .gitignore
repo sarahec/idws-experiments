@@ -7,6 +7,12 @@
 .ipynb_checkpoints
 .virtual_documents
 
+# npm and yarn package managers
+node_modules
+install-state.gz
+.pnp.*
+
+
 # Secrets management
 .env.keys
 

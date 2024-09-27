@@ -61,10 +61,19 @@
 
             dotenv.disableHint = true; # Using dotenvx instead and there's no integration
 
-            languages.javascript.enable = true;
             languages.deno.enable = true;
             languages.typescript.enable = true;
             languages.nix.enable = true;
+
+            languages.javascript = {
+              enable = true;
+              corepack.enable = true;
+              yarn = {
+                enable = true;
+                install.enable = true;
+                package = pkgs.yarn-berry;
+              };
+            };
 
             languages.python = {
               enable = true;
@@ -74,6 +83,8 @@
                 requirements = ''
                   ipykernel
                   jupyterlab
+                  jupyterlab-lsp
+                  json-lsp
                   langchain
                   langchain-community
                   langchain-groq
@@ -82,6 +93,7 @@
                   python-lsp-black
                   python-lsp-server
                   tavily-python
+                  typescript-language-server
                   voila
                 '';
               };
@@ -89,8 +101,8 @@
 
             # https://devenv.sh/reference/options/
             packages = [
-              pkgs.deno
               pkgs.dotenvx
+              pkgs.jupyter-all
               pkgs.nodePackages.ijavascript
               pkgs.typescript-language-server
             ];
@@ -100,9 +112,13 @@
               entry = ".devenv/profile/bin/ripsecrets  --strict-ignore";
             };
 
+            processes.deno.exec = ''
+                deno jupyter --install
+                deno run --allow-env
+            '';
+
             processes.juypter.exec = ''
-              deno jupyter --install
-              jupyter-lab
+              ${pkgs.jupyter-all}/bin/jupyter-lab
             '';
 
             enterShell = ''
